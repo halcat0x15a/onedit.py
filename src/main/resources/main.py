@@ -9,8 +9,6 @@ import simplejson as json
 from flask import Flask
 from flask import request
 
-HOST = '0.0.0.0'
-
 app = Flask(__name__)
 
 @app.route('/highlight', methods=['POST'])
@@ -26,6 +24,10 @@ _lexers = json.dumps(map(lambda lexer: {'name':lexer[0], 'alias':lexer[1][0]}, g
 def lexers():
     return _lexers
 
-port = os.environ.get('PORT', 5000)
+def run():
+    host = '0.0.0.0'
+    port = os.environ.get('PORT', 5000)
+    app.run(host=host, port=port)
 
-app.run(host=HOST, port=port)
+if __name__ == '__main__':
+    run()

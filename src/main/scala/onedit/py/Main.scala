@@ -7,4 +7,7 @@ import javax.script._
 object Main extends App {
   val engine = (new ScriptEngineManager).getEngineByName("python")
   engine.eval(new InputStreamReader(getClass.getResourceAsStream("/main.py")))
+  engine match {
+    case inv: Invocable => inv.invokeFunction("run")
+  }
 }
