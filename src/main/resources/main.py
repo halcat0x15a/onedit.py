@@ -19,9 +19,9 @@ app = Flask(__name__)
 
 @app.route('/highlight', methods=['POST'])
 def highlight():
+    code = request.form['content']
     lexer = get_lexer_by_name(request.form['lang'])
     formatter = HtmlFormatter()
-    code = request.form['content']
     return highlight(code, lexer, formatter)
 
 @app.route('/lexers', methods=['GET'])
