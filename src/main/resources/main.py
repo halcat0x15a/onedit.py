@@ -15,7 +15,7 @@ app = Flask(__name__)
 def highlight():
     code = request.form['content']
     lexer = get_lexer_by_name(request.form['lang'])
-    formatter = HtmlFormatter()
+    formatter = HtmlFormatter(nowrap=True)
     return pygments.highlight(code, lexer, formatter)
 
 _lexers = json.dumps(map(lambda lexer: {'name':lexer[0], 'alias':lexer[1][0]}, get_all_lexers()))
