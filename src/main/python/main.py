@@ -15,7 +15,7 @@ app = Flask(__name__)
 def highlight():
     code = request.form['content']
     filename = request.args.get('filename', None)
-    lexer = get_lexer_for_filename(filename) if filename else get_lexer_by_name(request.form['lang'])
+    lexer = get_lexer_for_filename(filename) if filename else get_lexer_by_name(request.form['language'])
     formatter = HtmlFormatter(nowrap=True)
     return pygments.highlight(code, lexer, formatter)
 
