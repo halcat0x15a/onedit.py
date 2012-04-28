@@ -1,7 +1,7 @@
 import os
 
 import pygments
-from pygments.lexers import get_lexer_by_name, get_all_lexers
+from pygments.lexers import get_lexer_by_name, get_lexer_for_filename, get_all_lexers
 from pygments.formatters import HtmlFormatter
 
 import simplejson as json
@@ -11,13 +11,20 @@ from flask import request
 
 app = Flask(__name__)
 
-@app.route('/highlight', methods=['POST'])
-def highlight():
+def highlight(lexer):
     code = request.form['content']
-    filename = request.args.get('filename', None)
-    lexer = get_lexer_for_filename(filename) if filename else get_lexer_by_name(request.form['language'])
     formatter = HtmlFormatter(nowrap=True)
     return pygments.highlight(code, lexer, formatter)
+
+@app.route('/highlight/language/<language>', methods=['POST'])
+def highlight_by_language(language):
+    lexer = get_lexer_by_name(language)
+    return highlight(lexer)
+
+@app.route('/highlight/filename/<filename>', methods=['POST'])
+def highlight_for_filename(filename):
+    lexer = get_lexer_for_filename(filename)
+    return highlight(lexer)
 
 _lexers = json.dumps(map(lambda lexer: {'name':lexer[0], 'alias':lexer[1][0]}, get_all_lexers()))
 
